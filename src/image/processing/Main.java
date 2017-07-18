@@ -15,21 +15,21 @@ public class Main {
     public static Filter filter;
     public static Scale scale;
 
-    public static void main(String[] args) {
-		//meanFilter=new MeanFilter(); 
-        //meanFilter.doMeanFilter(5);
-        image = new Image("grayscale.jpg");
-        filter = new Filter();
-        scale = new Scale();
-                //filter.doMeanFilter(3,image);
-        //BufferedImage img= filter.doAlphaTrimFiltering(image,0);
-        BufferedImage img = scale.upScale(image, 2);
-
-        File f = new File("MyFile.png");
-        try {
-            ImageIO.write(img, "png", f);
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    public static void main(String[] args) {
+//		//meanFilter=new MeanFilter(); 
+//        //meanFilter.doMeanFilter(5);
+//        image = new Image("grayscale.jpg");
+//        filter = new Filter();
+//        scale = new Scale();
+//                //filter.doMeanFilter(3,image);
+//        //BufferedImage img= filter.doAlphaTrimFiltering(image,0);
+//        BufferedImage img = scale.upScale(image, 2);
+//
+//        File f = new File("MyFile.png");
+//        try {
+//            ImageIO.write(img, "png", f);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 }
