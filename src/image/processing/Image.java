@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 //import javax.swing.JFrame;
 
-public class Image {
+public class Image  {
 
     private int width;
 
@@ -26,6 +26,10 @@ public class Image {
 
     public Color getPixelValAt(int x, int y) {
         return new Color(this.image.getRGB(x, y));
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
    
@@ -48,6 +52,12 @@ public class Image {
         }
 
     }
+    
+//    Image(BufferedImage bufferedImage){
+//        super(bufferedImage.getWidth(),bufferedImage.getHeight(),bufferedImage.getType());
+//        this.setData(image.getData());
+//
+//    }
 
     public List<List<Color>> getPixels(String fileName) {
 

@@ -8,6 +8,7 @@ package image.processing;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -60,9 +61,14 @@ public class ImageProcess extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         selectedFIlter = new javax.swing.JComboBox();
         applyFilter = new javax.swing.JButton();
+        adaptiveSpinner = new javax.swing.JSpinner();
         jPanel3 = new javax.swing.JPanel();
         jSlider1 = new javax.swing.JSlider();
+        jSlider2 = new javax.swing.JSlider();
         jButton1 = new javax.swing.JButton();
+        HorFlip = new javax.swing.JButton();
+        verticalFlip = new javax.swing.JButton();
+        Save = new javax.swing.JButton();
 
         fileChooser.setFileFilter(new MyCustomFilter());
 
@@ -73,6 +79,7 @@ public class ImageProcess extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(image_2);
 
+        image1_add.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Open Folder-30.png"))); // NOI18N
         image1_add.setText("Add");
         image1_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,6 +88,11 @@ public class ImageProcess extends javax.swing.JFrame {
         });
 
         selectedFIlter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mean Filter", "Median FIlter", "Alpha Trimmed Filter" }));
+        selectedFIlter.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                selectedFIlterItemStateChanged(evt);
+            }
+        });
         selectedFIlter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectedFIlterActionPerformed(evt);
@@ -102,7 +114,10 @@ public class ImageProcess extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(selectedFIlter, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(applyFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(applyFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(adaptiveSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -111,7 +126,9 @@ public class ImageProcess extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(selectedFIlter, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(applyFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(applyFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(adaptiveSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -124,17 +141,28 @@ public class ImageProcess extends javax.swing.JFrame {
             }
         });
 
+        jSlider2.setMaximum(7);
+        jSlider2.setValue(0);
+        jSlider2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSlider2StateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+            .addComponent(jSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("Edge Detection");
@@ -144,59 +172,86 @@ public class ImageProcess extends javax.swing.JFrame {
             }
         });
 
+        HorFlip.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Flip Horizontal-30.png"))); // NOI18N
+        HorFlip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HorFlipActionPerformed(evt);
+            }
+        });
+
+        verticalFlip.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Flip Vertical-30.png"))); // NOI18N
+        verticalFlip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verticalFlipActionPerformed(evt);
+            }
+        });
+
+        Save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Save-30.png"))); // NOI18N
+        Save.setText("Save");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(image1_add, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(image1_add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Save, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(HorFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(verticalFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 39, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(image1_add, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(HorFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(verticalFlip, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(image1_add, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Save, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2)))
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
                     .addComponent(jScrollPane2))
                 .addContainerGap())
         );
@@ -205,6 +260,9 @@ public class ImageProcess extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     public Image image;
     private Image dupImage;
+    private BufferedImage clone_image_temp;
+
+    
     private BufferedImage image1;
     private BufferedImage clone_image1;
     private void image1_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_image1_addActionPerformed
@@ -221,7 +279,8 @@ public class ImageProcess extends javax.swing.JFrame {
             File file = fileChooser.getSelectedFile();
             image = new Image(file);
             dupImage = image;
-
+            clone_image_temp=dupImage.getImage();
+                    
             image1 = image.getImage();
             clone_image1 = image1;
 
@@ -247,7 +306,8 @@ public class ImageProcess extends javax.swing.JFrame {
             clone_image1 = filter.doMedianFiltering(dupImage);
             image_2.setIcon(new ImageIcon(clone_image1));
         } else {
-            clone_image1 = filter.doAlphaTrimFiltering(dupImage, 4);  //should be chnaged
+            int p= (int)adaptiveSpinner.getValue();
+            clone_image1 = filter.doAlphaTrimFiltering(dupImage,p);  //should be chnaged
             image_2.setIcon(new ImageIcon(clone_image1));
 
         }
@@ -277,6 +337,56 @@ public class ImageProcess extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jSlider2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSlider2StateChanged
+        // TODO add your handling code here:
+        scale = new Scale();
+        int sliderval = jSlider2.getValue();
+        try {
+            if (sliderval > 0) {
+                double factor = 1.0 / sliderval;
+                clone_image1 = scale.bilnearDownScale(image, factor);
+                image_2.setIcon(new ImageIcon(clone_image1));
+            }
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jSlider2StateChanged
+
+    private void selectedFIlterItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_selectedFIlterItemStateChanged
+        // TODO add your handling code here:
+        if (selectedFIlter.getSelectedIndex() == 2) {
+            adaptiveSpinner.setVisible(true);
+        } else {
+            adaptiveSpinner.setVisible(false);
+
+        }
+    }//GEN-LAST:event_selectedFIlterItemStateChanged
+    public GeneralOperations op;
+    private void HorFlipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HorFlipActionPerformed
+        // TODO add your handling code here:
+        op= new GeneralOperations();
+        clone_image1 = op.applyHorizontialFlip(dupImage.getImage());
+        image_2.setIcon(new ImageIcon(clone_image1));
+        dupImage.setImage(clone_image1);
+        
+        //dupImage= clone_image1;
+        
+    }//GEN-LAST:event_HorFlipActionPerformed
+
+    private void verticalFlipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verticalFlipActionPerformed
+        // TODO add your handling code here:
+        op= new GeneralOperations();
+        clone_image1 = op.applyVerticalFlip(dupImage.getImage());
+        image_2.setIcon(new ImageIcon(clone_image1));
+        dupImage.setImage(clone_image1);
+    }//GEN-LAST:event_verticalFlipActionPerformed
+    
+    static ArrayList<BufferedImage> undoList;
+    static ArrayList<BufferedImage> redoList;
+
+    public static void initArray(){
+        undoList= new ArrayList();
+        redoList= new ArrayList();
+    }
     /**
      * @param args the command line arguments
      */
@@ -305,14 +415,21 @@ public class ImageProcess extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ImageProcess().setVisible(true);
+                initArray();
             }
+            
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton HorFlip;
+    private javax.swing.JButton Save;
+    private javax.swing.JSpinner adaptiveSpinner;
     private javax.swing.JButton applyFilter;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton image1_add;
@@ -325,6 +442,8 @@ public class ImageProcess extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JSlider jSlider2;
     private javax.swing.JComboBox selectedFIlter;
+    private javax.swing.JButton verticalFlip;
     // End of variables declaration//GEN-END:variables
 }

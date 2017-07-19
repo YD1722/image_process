@@ -119,6 +119,7 @@ public class Filter {
 
                 for (int row = 0; row < 3; row++) {
                     for (int col = 0; col < 3; col++) {
+                        try{
                         Color mycolor = img.getPixelValAt(i - 1 + col, j - 1 + row);
                         colorRed = colorRed + (mycolor.getRed() * edgeDetectMask[row][col]);
                         colorRed = colorRed + (mycolor.getRed() * edgeDetectMask[2 - col][row]);
@@ -128,6 +129,10 @@ public class Filter {
 
                         colorBlue = colorBlue + (mycolor.getBlue() * edgeDetectMask[2 - col][row]);
                         colorBlue = colorBlue + (mycolor.getBlue() * edgeDetectMask[row][col]);
+                        }catch (Exception e){
+                            
+                        }
+                        
 
                     }
                 }
